@@ -12,15 +12,16 @@ class ThermalResource {
     let setTempMessage = new Message(requestHeader, setTempReqBody);
     adapterService.processRequest(setTempMessage);
   }
-
-  getCurrentTemperature(){
-    
-  }
 }
 
 class Nozzel extends ThermalResource {
+
   constructor(toolId, targetTemperature) {
     super(toolId, targetTemperature);
+  }
+
+  static setCurrentTemperature(responseBody){
+    console.log(responseBody);
   }
 }
 

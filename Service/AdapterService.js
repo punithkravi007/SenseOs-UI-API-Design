@@ -1,5 +1,6 @@
 const WebscoketService = require("./WebsocketService.js");
-const { Header, ResponseBody, Message } = require("../Components/Message");
+const { ResponseBody } = require("../Components/Message");
+const { Nozzel, Bed } = require("../Components/ThermalResource");
 
 class AdapterService {
   constructor() {
@@ -13,7 +14,11 @@ class AdapterService {
   processResponse(message) {
     var responseBody = JSON.parse(message["data"]);
     responseBody = new ResponseBody(responseBody); 
-    console.log(responseBody);
+    switch(responseBody["event_name"]){
+      case "EventToolDataUpdate":
+        Nozzel.setCurrentTemperature(responseBody);
+        break;
+    }
   }
 }
 

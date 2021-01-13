@@ -8,7 +8,7 @@ let adapterService = new AdapterService();
 
 
 setTimeout(() => {
-  new Nozzel("id_0", 130).setTargetTemperature(
+  new Nozzel("id_0", 140).setTargetTemperature(
     TOOL_SET_TARGET_TEMP,
     adapterService
   );
