@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Lena Websocket</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        nav > .nav.nav-tabs{
+
+          border: none;
+            color:#fff;
+            background:#272e38;
+            border-radius:0;
+
+        }
+        nav > div a.nav-item.nav-link,
+        nav > div a.nav-item.nav-link.active
+        {
+          border: none;
+            padding: 18px 25px;
+            color:#fff;
+            background:#272e38;
+            border-radius:0;
+        }
+
+        nav > div a.nav-item.nav-link.active:after
+         {
+          content: "";
+          position: relative;
+          bottom: -60px;
+          left: -10%;
+          border: 15px solid transparent;
+          border-top-color: #e74c3c ;
+        }
+        .tab-content{
+          background: #fdfdfd;
+            line-height: 25px;
+            border: 1px solid #ddd;
+            border-top:5px solid #e74c3c;
+            border-bottom:5px solid #e74c3c;
+            padding:30px 25px;
+        }
+
+        nav > div a.nav-item.nav-link:hover,
+        nav > div a.nav-item.nav-link:focus
+        {
+          border: none;
+            background: #e74c3c;
+            color:#fff;
+            border-radius:0;
+            transition:background 0.20s linear;
+        }
+        .temp-resource{
+            margin-top:5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+              <div class="row">
+                <div class="col-xs-12 ">
+                  <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Lena-Home</a>
+                      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Resource Stats</a>
+                      <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Temperature Panel</a>
+                      <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Enable Resource</a>
+                      <a class="nav-item nav-link" id="nav-motion-panel-tab" data-toggle="tab" href="#nav-motion-panel" role="tab" aria-controls="nav-motion-panel" aria-selected="false">Motion Panel</a>
+                    </div>
+                  </nav>
+                  <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                      <section>
+                          <div class="row" style="padding:10px;">
+                              <div class="col-sm-2" style="border-right:1px solid gray">
+                                  <button style="margin-top:5px;border-radius:0px;width:150px" class="btn btn-success" id="machine-on">Machine On</button>
+                                  <button style="margin-top:14px;border-radius:0px;width:150px" class="btn btn-primary" id="machine-off">Machine Off</button>
+                                  <button style="margin-top:14px;border-radius:0px;width:150px" class="btn btn-danger" id="emergency-hit">Emergency Hit</button>
+                                  <button  style="margin-top:14px;border-radius:0px;width:150px" class="btn btn-warning" id="emergency-clear">Emergency Clear</button>
+                              </div>
+                              <div class="col-sm-4" style="border-right:1px solid gray">
+                                  <div class="input-group">
+                                      <input style="border-radius:0px" id="g-code-file" class="form-control" type="file">
+                                      <span>
+                                          <button class="btn btn-primary gc-file-upload" style="border-radius:0px;">Upload</button>
+                                      </span>
+                                  </div>
+                                  <hr>
+                                  <div>
+                                      <button class="btn btn-default" style="width:170px;border-radius:0px; background-color:darkcyan;margin-top:5px;color:white">Start Print</button>
+                                      <button class="btn btn-default" style="width:170px;border-radius:0px; background-color:goldenrod;margin-top:5px;color:white">Pause Print</button>
+                                      <button class="btn btn-default" style="width:170px;border-radius:0px; background-color:darkkhaki;margin-top:5px;color:white">Resume Print</button>
+                                      <button class="btn btn-default" style="width:170px;border-radius:0px; background-color:darkgray;margin-top:5px;color:white">Bed Prepared</button>
+                                      <button class="btn btn-default" style="width:170px;border-radius:0px; background-color:tomato;margin-top:5px;color:white">Cancel Print</button>
+                                      <button class="btn btn-default" style="width:170px;border-radius:0px; background-color:tan;margin-top:5px;color:white">Print Retrieved</button>
+                                  </div>
+                              </div>
+                              <div class="col-sm-3">
+                                  <div class="input-group">
+                                        <textarea id="g-codes" class="form-control" style="border-radius:0px;height:500px;max-height:200px;over-flow:auto">
+                                        </textarea>
+                                  </div>
+                              </div>
+                          </div>
+                      </section>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                      <h3>Resource Stats</h3>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                      <section style="padding:20px;">
+                          <div class="row">
+                              <div class="col-sm-5">Thermal Resource</div>
+                              <div class="col-sm-4">Target Temperature</div>
+                              <div class="col-sm-3">Current Temperature</div>
+                          </div>
+                          <hr>
+                        <div class="row temp-resource">
+                            <div class="col-sm-5" style="padding-top:5px">Nozzle One Temperature : </div>
+                            <div class="col-sm-4"><input class="form-control temp-resource" type="number" id="nozzle-one-temperature" style="height:30px;border-radius:0px" value="80"></div>
+                            <div class="col-sm-3"><p id="nozzle-0-temperature"></p></div>
+                        </div>
+                          <div class="row temp-resource">
+                            <div class="col-sm-5" style="padding-top:5px">Nozzle Two Temperature : </div>
+                            <div class="col-sm-4"><input class="form-control temp-resource" type="number" id="nozzle-two-temperature" style="height:30px;border-radius:0px" value="80"></div>
+                            <div class="col-sm-3"><p id="nozzle-1-temperature"></p></div>
+                          </div>
+                          <div class="row temp-resource">
+                            <div class="col-sm-5" style="padding-top:5px">Bed One Temperature : </div>
+                            <div class="col-sm-4"><input class="form-control temp-resource" type="number" id="bed-one-temperature" style="height:30px;border-radius:0px" value="80"></div>
+                            <div class="col-sm-3"><p id="bed-0-temperature"></p></div>
+                        </div>
+                          <div class="row temp-resource">
+                            <div class="col-sm-5" style="padding-top:5px">Bed Two Temperature : </div>
+                            <div class="col-sm-4"><input class="form-control temp-resource" type="number" id="bed-two-temperature" style="height:30px;border-radius:0px" value="80"></div>
+                            <div class="col-sm-3"><p id="bed-1-temperature"></p></div>
+                          </div>
+                          <div class="row temp-resource">
+                            <div class="col-sm-5" style="padding-top:5px">Print Chamber Temperature : </div>
+                            <div class="col-sm-4"><input class="form-control temp-resource" type="number" id="print-chamber-temperature" style="height:30px;border-radius:0px" value="80"></div>
+                          </div>
+                          <div class="row temp-resource">
+                            <div class="col-sm-5" style="padding-top:5px">Spool Chamber Temperature : </div>
+                            <div class="col-sm-4"><input class="form-control temp-resource" type="number" id="spool-chamber-temperature" style="height:30px;border-radius:0px" value="80"></div>
+                          </div>
+                      </section>
+                    </div>
+                    <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                    </div>
+                    <div class="tab-panel fade" id="nav-motion-panel" role="tabpanel" aria-labelledby="nav-motion-panel-tab">
+                        <h3>Motion Panel</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+</div>
+</div><script type="text/javascript" src="script.js"></script>
+</body>
+</html>
