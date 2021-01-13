@@ -1,4 +1,5 @@
 const WebscoketService = require("./WebsocketService.js");
+const { Header, ResponseBody, Message } = require("../Components/Message");
 
 class AdapterService {
   constructor() {
@@ -11,9 +12,8 @@ class AdapterService {
 
   processResponse(message) {
     var responseBody = JSON.parse(message["data"]);
-    if (responseBody["body"]["event_id"] =="lena.resources.tool.EventToolDataUpdate") {
-      console.log(responseBody);
-    }
+    responseBody = new ResponseBody(responseBody); 
+    console.log(responseBody);
   }
 }
 

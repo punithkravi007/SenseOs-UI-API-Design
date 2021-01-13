@@ -10,8 +10,11 @@ class ThermalResource {
     let requestHeader = new Header("fire", "Request");
     let setTempReqBody = new RequestBody(event, this);
     let setTempMessage = new Message(requestHeader, setTempReqBody);
-    console.log(setTempMessage);
     adapterService.processRequest(setTempMessage);
+  }
+
+  getCurrentTemperature(){
+    
   }
 }
 
